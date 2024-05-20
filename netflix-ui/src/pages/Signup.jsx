@@ -2,11 +2,31 @@ import styled from "styled-components"
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { useState } from "react";
+import { firebaseAuth } from "../store/firebase-config";
+import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup() {
+  const navigate = useNavigate()
   const [showPassword,setShowPassword] = useState(false)
+  const [formValues, setFormValues] = useState({
+    email: "",
+    password: "",
+  });
+  const handleSignUp = async() => {
+    try{
+      const {email,password} = formValues
+      await createUserWithEmailAndPassword(firebaseAuth,email,password)
+    }
+    catch(error){
+      console.log(error);
+    }
+  }
+  onAuthStateChanged(firebaseAuth,(currentUser) => {
+    if(currentUser) navigate("/")
+  })
   return (
-    <Container >
+    <Container>
       <BackgroundImage />
       <div className="content">
         <Header login />
@@ -19,14 +39,37 @@ export default function Signup() {
             </h6>
           </div>
           <div className="form">
-            <input type="email" placeholder="Email Address" name="email" />
-            {showPassword &&  <input type="password" placeholder="Password" name="password" />
-            }
-            {!showPassword && 
-              <button onClick={()=>setShowPassword(true)}>Get Started</button>
-            }
+            <input
+              type="email"
+              placeholder="Email Address"
+              name="email"
+              value={formValues.email}
+              onChange={(e) =>
+                setFormValues({
+                  ...formValues,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />
+            {showPassword && (
+              <input
+                type="password"
+                placeholder="Password"
+                name="password"
+                value={formValues.password}
+                onChange={(e) =>
+                  setFormValues({
+                    ...formValues,
+                    [e.target.name]: e.target.value,
+                  })
+                }
+              />
+            )}
+            {!showPassword && (
+              <button onClick={() => setShowPassword(true)}>Get Started</button>
+            )}
           </div>
-          <button>Sign Up</button>
+          <button onClick={handleSignUp}>Sign Up</button>
         </div>
       </div>
     </Container>
