@@ -2,7 +2,7 @@ import styled from "styled-components"
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { useState } from "react";
-import { firebaseAuth } from "../store/firebase-config";
+import { firebaseAuth } from "../utils/firebase-config";
 import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 

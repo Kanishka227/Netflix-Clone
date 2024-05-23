@@ -3,7 +3,7 @@ import logo from "../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FaPowerOff, FaSearch } from "react-icons/fa";
-import { firebaseAuth } from "../store/firebase-config";
+import { firebaseAuth } from "../utils/firebase-config";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 
 export default function Navbar({ isScrolled }) {
