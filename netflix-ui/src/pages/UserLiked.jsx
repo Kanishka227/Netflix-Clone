@@ -2,23 +2,19 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
-import { fetchMovies, getGenres, getUserLikedMovies } from "../store";
+import { getUserLikedMovies } from "../store";
 import { onAuthStateChanged } from "firebase/auth";
 import { firebaseAuth } from "../utils/firebase-config";
 import styled from "styled-components";
 import Navbar from "../components/Navbar";
-import Slider from "../components/Slider";
-import NotAvailable from "../components/NotAvailable";
-import SelectGenre from "../components/SelectGenre";
+
 import Card from "../components/Card";
 
 export default function UserLiked() {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
 
-  const genresLoaded = useSelector((state) => state.netflix.genresLoaded);
   const movies = useSelector((state) => state.netflix.movies);
-  const genres = useSelector((state) => state.netflix.genres);
 
   const [email, setEmail] = useState(undefined);
   onAuthStateChanged(firebaseAuth, (currentUser) => {
@@ -39,20 +35,27 @@ export default function UserLiked() {
     return () => (window.onscroll = null);
   };
 
-  return <Container>
-    <Navbar isScrolled={isScrolled}>
-      <div className="content flex column">
-        <h1>My List</h1>
-        <div className="grid flex">
-          {
-            movies.map((movie,index) => {
-              return <Card movieData={movie} index={index} key={movie.id} isLiked={true}/>
-            })
-          }
+  return (
+    <Container>
+      <Navbar isScrolled={isScrolled}>
+        <div className="content flex column">
+          <h1>My List</h1>
+          <div className="grid flex">
+            {movies.map((movie, index) => {
+              return (
+                <Card
+                  movieData={movie}
+                  index={index}
+                  key={movie.id}
+                  isLiked={true}
+                />
+              );
+            })}
+          </div>
         </div>
-      </div>
-    </Navbar>
-  </Container>;
+      </Navbar>
+    </Container>
+  );
 }
 
 const Container = styled.div``;
