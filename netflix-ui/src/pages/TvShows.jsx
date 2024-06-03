@@ -23,7 +23,7 @@ export default function TvShows() {
 
   useEffect(() => {
     dispatch(getGenres());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (genresLoaded) dispatch(fetchMovies({ type: "tv" }));

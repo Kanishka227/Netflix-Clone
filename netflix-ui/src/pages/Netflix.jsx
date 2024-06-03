@@ -21,7 +21,7 @@ export default function Netflix() {
 
   useEffect(()=>{
      dispatch(getGenres())
-  },[])
+  },[dispatch])
 
   useEffect(() => {
     if(genresLoaded) dispatch(fetchMovies({type: "all"}))
