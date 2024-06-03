@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { useEffect } from "react";
@@ -12,7 +11,7 @@ import NotAvailable from "../components/NotAvailable";
 import SelectGenre from "../components/SelectGenre";
 
 export default function Movies() {
-  const navigate = useNavigate();
+  
   const [isScrolled, setIsScrolled] = useState(false);
 
   const genresLoaded = useSelector((state) => state.netflix.genresLoaded);
@@ -23,11 +22,11 @@ export default function Movies() {
 
   useEffect(() => {
     dispatch(getGenres());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (genresLoaded) dispatch(fetchMovies({ type: "movie" }));
-  },[genresLoaded]);
+  }, [genresLoaded, dispatch]);
 
   window.onscroll = () => {
     setIsScrolled(window.pageYOffset === 0 ? false : true);
